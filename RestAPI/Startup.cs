@@ -1,7 +1,10 @@
+using Core.Domains;
+using Core.Repository;
 using Core.Services.Categories;
 using Core.Services.Products;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,8 +25,11 @@ namespace RestAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IProductService, ProductService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddSwaggerGen();
             services.AddSwaggerGen(c =>
@@ -34,6 +40,11 @@ namespace RestAPI
                     Title = "Rest API",
                     Description = "Categories and Products APIs",
                 });
+            });
+
+            services.AddDbContext<StoreContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("StoreEntities"));
             });
         }
 

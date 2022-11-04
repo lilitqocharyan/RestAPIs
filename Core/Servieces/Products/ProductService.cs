@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Domains;
+using Core.Repository;
 using Core.Services.Products;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,37 +9,38 @@ namespace Core.Services.Products
 {
     public class ProductService : IProductService
     {
+        private readonly IProductRepository _productRepository;
+
+        public ProductService(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
         public void DeleteProduct(int id)
         {
-            var product = Lists.products.Where(p => p.ID == id).FirstOrDefault();
-            Lists.products.Remove(product);
+            _productRepository.Delete(id);
+            _productRepository.Save();
         }
 
         public IList<Product> GetAllProducts()
         {
-            return Lists.products;
+            return _productRepository.Products().ToList();
         }
 
         public Product GetProductById(int id)
         {
-            var product = Lists.products.Where(c => c.ID == id).FirstOrDefault();
-            return product;
+            return _productRepository.GetByID(id);
         }
 
         public void InsertProduct(Product product)
         {
-            Lists.products.Add(product);
+            _productRepository.Insert(product);
+            _productRepository.Save();
         }
 
         public void UpdateProduct(Product product)
         {
-            var oldProduct = Lists.products.Where(c => c.ID == product.ID).FirstOrDefault();
-            oldProduct.Name = product.Name;
-            oldProduct.Description = product.Description;
-            oldProduct.Price = product.Price;
-            oldProduct.Type = product.Type;
-            oldProduct.Category = product.Category;
-            
+            _productRepository.Update(product);
+            _productRepository.Save();
         }
     }
 }

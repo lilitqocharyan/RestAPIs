@@ -1,4 +1,5 @@
 ﻿using Core.Domains;
+using Core.Repository;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,33 +7,37 @@ namespace Core.Services.Categories
 {
     public class CategoryService : ICategoryService
     {
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryService(ICategoryRepository categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
         public void DeleteCategoryById(int id)
         {
-            var category = Lists.categories.Where(c => c.ID == id).FirstOrDefault();
-            Lists.categories.Remove(category);
+            _categoryRepository.Delete(id);
+            _categoryRepository.Save();
         }
 
         public IList<Category> GetAllCategories()
         {
-            return Lists.categories;
+            return _categoryRepository.Categories().ToList();
         }
 
         public Category GetCategoryById(int id)
         {
-            var category = Lists.categories.Where(c => c.ID == id).FirstOrDefault();
-            return category;
+            return _categoryRepository.GetByID(id);
         }
 
         public void InsertCategory(Category category)
         {
-            Lists.categories.Add(category);
+            _categoryRepository.Insert(category);
+            _categoryRepository.Save();
         }
 
         public void UpdateCategory(Category category)
         {
-            var oldCategory = Lists.categories.Where(c => c.ID == category.ID).FirstOrDefault();
-            oldCategory.Name = category.Name;
-            oldCategory.Description = category.Description;
+            _categoryRepository.Update(category);
+            _categoryRepository.Save();
         }
     }
 }
