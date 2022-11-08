@@ -16,23 +16,23 @@ namespace Core.Repository
         }
         public void Delete(int productTypeId)
         {
-            ProductType productType = _context.productType.Find(productTypeId);
-            _context.productType.Remove(productType);
+            ProductType productType = _context.ProductTypes.Find(productTypeId);
+            _context.ProductTypes.Remove(productType);
         }
 
         public IEnumerable<ProductType> ProductTypes()
         {
-            return _context.productType;
+            return _context.ProductTypes;
         }
 
         public ProductType GetByID(int productTypeId)
         {
-            return _context.productType.Find(productTypeId);
+            return _context.ProductTypes.Find(productTypeId);
         }
 
         public void Insert(ProductType productType)
         {
-            _context.productType.Add(productType);
+            _context.ProductTypes.Add(productType);
         }
 
         public void Save()

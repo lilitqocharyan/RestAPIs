@@ -16,23 +16,23 @@ namespace Core.Repository
         }
         public void Delete(int categoryId)
         {
-            Category category = _context.category.Find(categoryId);
-            _context.category.Remove(category);
+            Category category = _context.Categories.Find(categoryId);
+            _context.Categories.Remove(category);
         }
 
         public IEnumerable<Category> Categories()
         {
-            return _context.category;
+            return _context.Categories;
         }
 
         public Category GetByID(int categoryId)
         {
-            return _context.category.Find(categoryId);
+            return _context.Categories.Find(categoryId);
         }
 
         public void Insert(Category category)
         {
-            _context.category.Add(category);
+            _context.Categories.Add(category);
         }
 
         public void Save()
