@@ -1,7 +1,8 @@
 ﻿using Core.Domains;
 using Core.Repository;
 using System.Collections.Generic;
-
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DLL.Services.Categories
 {
@@ -20,7 +21,7 @@ namespace DLL.Services.Categories
 
         public IList<Category> GetAllCategories()
         {
-            return _categoryRepository.GetAll();
+            return _categoryRepository.GetAll().ToList();
         }
 
         public Category GetCategoryById(int id)

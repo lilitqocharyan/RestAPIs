@@ -1,6 +1,8 @@
 ﻿using Core.Domains;
 using Core.Repository;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace DLL.Services.Products
 {
@@ -20,7 +22,7 @@ namespace DLL.Services.Products
 
         public IList<Product> GetAllProducts()
         {
-            return _productRepository.GetAll();
+            return _productRepository.GetAll().Include(p=>p.Category).Include(p=>p.ProductType).ToList();
         }
 
         public Product GetProductById(int id)
