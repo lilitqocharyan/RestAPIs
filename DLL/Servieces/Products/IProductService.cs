@@ -1,7 +1,8 @@
 ﻿using Core.Domains;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Core.Services.Products
+namespace DLL.Services.Products
 {
     public interface IProductService
     {

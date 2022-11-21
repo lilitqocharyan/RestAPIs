@@ -1,7 +1,7 @@
 using Core.Domains;
 using Core.Repository;
-using Core.Services.Categories;
-using Core.Services.Products;
+using DLL.Services.Categories;
+using DLL.Services.Products;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +25,7 @@ namespace RestAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductTypeRepository, ProductTypeRepository>();

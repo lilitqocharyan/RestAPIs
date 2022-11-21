@@ -1,10 +1,10 @@
 ﻿using Core.Domains;
-using Core.Services.Categories;
+using DLL.Services.Categories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RestAPI.RequestModels;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core;
 
 namespace RestAPI.Controllers
 {
@@ -17,7 +17,10 @@ namespace RestAPI.Controllers
         {
             _categoryService = categoryService;
         }
-
+        /// <summary>
+        /// Get all categories
+        /// </summary>
+        /// <returns>Category list</returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<Category>), StatusCodes.Status200OK)]
         public IActionResult Get()
@@ -25,46 +28,69 @@ namespace RestAPI.Controllers
             return Ok(_categoryService.GetAllCategories());
         }
 
+        /// <summary>
+        /// Get category by id
+        /// </summary>
+        /// <param name="id">Category identifier</param>
+        /// <returns>Category</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(List<Category>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(List<Category>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
         public IActionResult Get([FromRoute] int id)
         {
-            if (id == 0) { return Ok(_categoryService.GetAllCategories()); }
-
             var category = _categoryService.GetCategoryById(id);
             if (category == null)
             {
-                throw new ObjectNotFoundException("not fount category by that specific id");
+                //throw new ObjectNotFoundException("not fount category by that specific id");
+                return Ok("not fount category by that specific id");
             }
 
             return Ok(category);
         }
 
+        /// <summary>
+        /// add category
+        /// </summary>
+        /// <param name="model">Category name and description</param>
+        /// <returns>message</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(List<Category>), StatusCodes.Status200OK)]
-        public IActionResult Add([FromBody] Category category)
+        public IActionResult Add([FromBody] CategoryAddRequest model)
         {
-            if (category == null) { throw new ArgumentNullException("category can not be null"); }
-
+            if (model == null) { throw new ArgumentNullException("category can not be null"); }
+            var category = new Category()
+            {
+                Name = model.Name,
+                Description = model.Description
+            };
             _categoryService.InsertCategory(category);
 
             return Ok("Category successfully added");
         }
 
+        /// <summary>
+        /// update category
+        /// </summary>
+        /// <param name="model">Category Id, name and description</param>
+        /// <returns>message</returns>
         [HttpPut]
-        [ProducesResponseType(typeof(List<Category>), StatusCodes.Status200OK)]
-        public IActionResult Update([FromBody] Category category)
+        public IActionResult Update([FromBody] CategoryUpdateRequest model)
         {
-            if (category == null) { throw new ArgumentNullException("category can not be null"); }
-
+            if (model == null) { throw new ArgumentNullException("category can not be null"); }
+            var category = new Category()
+            {
+                ID = model.Id,
+                Name = model.Name,
+                Description = model.Description
+            };
             _categoryService.UpdateCategory(category);
 
             return Ok("Category successfully updated");
         }
-
+        /// <summary>
+        /// delete category by id
+        /// </summary>
+        /// <param name="id">Category id</param>
+        /// <returns>message</returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(List<Category>), StatusCodes.Status200OK)]
         public IActionResult Delete(int id)
         {
             _categoryService.DeleteCategoryById(id);

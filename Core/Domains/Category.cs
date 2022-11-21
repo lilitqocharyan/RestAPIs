@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Domains
 { 
-    public class Category
+    public class Category: BaseEntity
     {
-        [Key]
-        public int ID { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
         [StringLength(200)]

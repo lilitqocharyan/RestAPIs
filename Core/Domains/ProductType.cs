@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Domains
 {
-    public class ProductType
+    public class ProductType: BaseEntity
     {
-        [Key]
-        public int ID { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
         public virtual ICollection<Product> Products { get; set; }

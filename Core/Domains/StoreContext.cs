@@ -12,6 +12,7 @@ namespace Core.Domains
         //    optionsBuilder.UseSqlServer(@"Server=DESKTOP-OMKQAFS;Database=Store;Trusted_Connection=True;");
         //}
 
+        
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }

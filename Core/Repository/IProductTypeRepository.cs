@@ -4,13 +4,8 @@ using System.Collections.Generic;
 
 namespace Core.Repository
 {
-    public interface IProductTypeRepository: IDisposable
+    public interface IProductTypeRepository: IRepository<ProductType>
     {
-        IEnumerable<ProductType> ProductTypes();
-        ProductType GetByID(int productTypeId);
-        void Insert(ProductType productType);
-        void Delete(int productTypeId);
-        void Update(ProductType productType);
-        void Save();
+
     }
 }

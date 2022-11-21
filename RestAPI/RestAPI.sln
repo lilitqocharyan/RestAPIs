@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestAPI", "RestAPI.csproj",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "..\Core\Core.csproj", "{2D67BD2C-6D18-40BB-8DC8-E090B4460F90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL", "..\DLL\DLL.csproj", "{4C4CE2DF-DB86-4753-AAF3-7E06743B6379}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2D67BD2C-6D18-40BB-8DC8-E090B4460F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D67BD2C-6D18-40BB-8DC8-E090B4460F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D67BD2C-6D18-40BB-8DC8-E090B4460F90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4CE2DF-DB86-4753-AAF3-7E06743B6379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4CE2DF-DB86-4753-AAF3-7E06743B6379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4CE2DF-DB86-4753-AAF3-7E06743B6379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4CE2DF-DB86-4753-AAF3-7E06743B6379}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

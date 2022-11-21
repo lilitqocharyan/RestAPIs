@@ -1,7 +1,7 @@
 ﻿using Core.Domains;
 using System.Collections.Generic;
 
-namespace Core.Services.Categories
+namespace DLL.Services.Categories
 {
     public interface ICategoryService
     {

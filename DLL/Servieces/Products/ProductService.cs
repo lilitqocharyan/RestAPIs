@@ -1,46 +1,43 @@
-﻿using Core;
-using Core.Domains;
+﻿using Core.Domains;
 using Core.Repository;
-using Core.Services.Products;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Core.Services.Products
+namespace DLL.Services.Products
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IRepository<Product> _productRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IRepository<Product> productRepository)
         {
             _productRepository = productRepository;
         }
         public void DeleteProduct(int id)
         {
             _productRepository.Delete(id);
-            _productRepository.Save();
+            _productRepository.SaveChanges();
         }
 
         public IList<Product> GetAllProducts()
         {
-            return _productRepository.Products().ToList();
+            return _productRepository.GetAll();
         }
 
         public Product GetProductById(int id)
         {
-            return _productRepository.GetByID(id);
+            return _productRepository.GetById(id);
         }
 
         public void InsertProduct(Product product)
         {
-            _productRepository.Insert(product);
-            _productRepository.Save();
+            _productRepository.Add(product);
+            _productRepository.SaveChanges();
         }
 
         public void UpdateProduct(Product product)
         {
             _productRepository.Update(product);
-            _productRepository.Save();
+            _productRepository.SaveChanges();
         }
     }
 }
