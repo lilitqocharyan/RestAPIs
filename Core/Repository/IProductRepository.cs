@@ -6,6 +6,6 @@ namespace Core.Repository
 {
     public interface IProductRepository: IRepository<Product>
     {
-
+        IEnumerable<Product> GetAllWithCategories();
     }
 }

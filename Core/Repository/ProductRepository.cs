@@ -14,5 +14,10 @@ namespace Core.Repository
         {
             _context = context;
         }
+
+        public IEnumerable<Product> GetAllWithCategories()
+        {
+            return _context.Products.Include(p=>p.Category).Include(p => p.ProductType).ToList();
+        }
     }
 }

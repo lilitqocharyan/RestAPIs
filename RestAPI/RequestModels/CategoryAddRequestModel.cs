@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace RestAPI.RequestModels
 {
-    public class ProductTypeAddRequest
+    public class CategoryAddRequestModel
     {
-        public int Id { get; set; }
-        public string Name { get;set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+
     }
 }

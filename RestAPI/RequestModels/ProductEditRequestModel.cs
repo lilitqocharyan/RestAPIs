@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RestAPI.RequestModels
 {
-    public class ProductUpdateRequest
+    public class ProductEditRequestModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

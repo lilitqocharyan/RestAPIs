@@ -6,6 +6,5 @@ namespace Core.Repository
 {
     public interface ICategoryRepository: IRepository<Category>
     {
-
     }
 }

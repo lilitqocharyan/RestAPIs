@@ -1,7 +1,7 @@
 using Core.Domains;
 using Core.Repository;
-using DLL.Services.Categories;
-using DLL.Services.Products;
+using BLL.Services.Categories;
+using BLL.Services.Products;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +31,8 @@ namespace RestAPI
             services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddSwaggerGen();
             services.AddSwaggerGen(c =>

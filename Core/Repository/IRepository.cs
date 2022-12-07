@@ -9,7 +9,7 @@ namespace Core.Repository
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        DbSet<T> GetAll();
+        IEnumerable<T> GetAll();
         T GetById(int id);
         void Add(T entity);
         void Update(T entity);

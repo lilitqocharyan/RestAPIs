@@ -1,11 +1,11 @@
-﻿using Core.Domains;
-using DLL.Services.Products;
+﻿using AutoMapper;
+using Core.Domains;
+using BLL.Services.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.RequestModels;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core;
 
 
 namespace RestAPI.Controllers
@@ -15,9 +15,11 @@ namespace RestAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-        public ProductsController(IProductService productService)
+        private readonly IMapper _mapper;
+        public ProductsController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace RestAPI.Controllers
         [ProducesResponseType(typeof(List<Product>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            return Ok(_productService.GetAllProducts());
+            return Ok(_productService.GetAll());
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace RestAPI.Controllers
         [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
         public IActionResult Get([FromRoute] int id)
         {
-            var product = _productService.GetProductById(id);
+            var product = _productService.GetById(id);
             if (product == null)
             {
                 //throw new ObjectNotFoundException("not fount product by that specific id");
@@ -56,21 +58,15 @@ namespace RestAPI.Controllers
         /// <param name="model">Product model</param>
         /// <returns>message</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(List<Product>), StatusCodes.Status200OK)]
-        public IActionResult Add([FromBody] ProductAddRequest model)
+        [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
+        public IActionResult Add([FromBody] ProductAddRequestModel model)
         {
             if (model == null) { throw new ArgumentNullException("product can not be null"); }
-            var product = new Product()
-            {
-                Name = model.Name,
-                Description = model.Description,
-                Price = model.Price,
-                ProductTypeID = model.ProductTypeID,
-                CategoryID = model.CategoryID
-            };
-            _productService.InsertProduct(product);
 
-            return Ok("Product successfully added");
+            var product = _mapper.Map<Product>(model);
+            var newProduct = _productService.Insert(product);
+
+            return Ok(newProduct);
         }
 
         /// <summary>
@@ -79,22 +75,14 @@ namespace RestAPI.Controllers
         /// <param name="model">Product model</param>
         /// <returns>message</returns>
         [HttpPut]
-        [ProducesResponseType(typeof(List<Product>), StatusCodes.Status200OK)]
-        public IActionResult Update([FromBody] ProductUpdateRequest model)
+        [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
+        public IActionResult Update([FromBody] ProductEditRequestModel model)
         {
             if (model == null) { throw new ArgumentNullException("product can not be null"); }
-            var product = new Product()
-            {
-                ID = model.Id,
-                Name = model.Name,
-                Description = model.Description,
-                Price = model.Price,
-                ProductTypeID = model.ProductTypeID,
-                CategoryID = model.CategoryID
-            };
-            _productService.UpdateProduct(product);
 
-            return Ok("Product successfully updated");
+            var product = _mapper.Map<Product>(model);
+            var newProduct = _productService.Update(product);
+            return Ok(newProduct);
         }
 
         /// <summary>
@@ -103,10 +91,9 @@ namespace RestAPI.Controllers
         /// <param name="id">Product id</param>
         /// <returns>message</returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(List<Product>), StatusCodes.Status200OK)]
         public IActionResult Delete(int id)
         {
-            _productService.DeleteProduct(id);
+            _productService.Delete(id);
 
             return Ok("Product successfully deleted");
         }

@@ -1,10 +1,11 @@
 ﻿using Core.Domains;
-using DLL.Services.Categories;
+using BLL.Services.Categories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.RequestModels;
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace RestAPI.Controllers
 {
@@ -13,9 +14,11 @@ namespace RestAPI.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        public CategoriesController(ICategoryService categoryService)
+        private readonly IMapper _mapper;
+        public CategoriesController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
         /// <summary>
         /// Get all categories
@@ -25,7 +28,7 @@ namespace RestAPI.Controllers
         [ProducesResponseType(typeof(List<Category>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            return Ok(_categoryService.GetAllCategories());
+            return Ok(_categoryService.GetAll());
         }
 
         /// <summary>
@@ -37,13 +40,12 @@ namespace RestAPI.Controllers
         [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
         public IActionResult Get([FromRoute] int id)
         {
-            var category = _categoryService.GetCategoryById(id);
+            var category = _categoryService.GetById(id);
             if (category == null)
             {
                 //throw new ObjectNotFoundException("not fount category by that specific id");
                 return Ok("not fount category by that specific id");
             }
-
             return Ok(category);
         }
 
@@ -53,17 +55,16 @@ namespace RestAPI.Controllers
         /// <param name="model">Category name and description</param>
         /// <returns>message</returns>
         [HttpPost]
-        public IActionResult Add([FromBody] CategoryAddRequest model)
+        [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
+        public IActionResult Add([FromBody] CategoryAddRequestModel model)
         {
             if (model == null) { throw new ArgumentNullException("category can not be null"); }
-            var category = new Category()
-            {
-                Name = model.Name,
-                Description = model.Description
-            };
-            _categoryService.InsertCategory(category);
 
-            return Ok("Category successfully added");
+            var category = _mapper.Map<Category>(model);
+
+            var newCategory = _categoryService.Insert(category);
+
+            return Ok(newCategory);
         }
 
         /// <summary>
@@ -72,18 +73,15 @@ namespace RestAPI.Controllers
         /// <param name="model">Category Id, name and description</param>
         /// <returns>message</returns>
         [HttpPut]
-        public IActionResult Update([FromBody] CategoryUpdateRequest model)
+        [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
+        public IActionResult Update([FromBody] CategoryEditRequestModel model)
         {
             if (model == null) { throw new ArgumentNullException("category can not be null"); }
-            var category = new Category()
-            {
-                ID = model.Id,
-                Name = model.Name,
-                Description = model.Description
-            };
-            _categoryService.UpdateCategory(category);
+            
+            var category = _mapper.Map<Category>(model);
+            var newCategory =  _categoryService.Update(category);
 
-            return Ok("Category successfully updated");
+            return Ok(newCategory);
         }
         /// <summary>
         /// delete category by id
@@ -93,7 +91,7 @@ namespace RestAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _categoryService.DeleteCategoryById(id);
+            _categoryService.DeleteById(id);
 
             return Ok("Category successfully deleted");
         }

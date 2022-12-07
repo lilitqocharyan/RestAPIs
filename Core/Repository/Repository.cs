@@ -18,9 +18,9 @@ namespace Core.Repository
             _entities = context.Set<T>();
         }
 
-        public DbSet<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return _entities;
+            return _entities.ToList();
         }
 
         public T GetById(int id)

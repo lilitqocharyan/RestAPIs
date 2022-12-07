@@ -2,44 +2,47 @@
 using Core.Repository;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
-namespace DLL.Services.Products
+namespace BLL.Services.Products
 {
     public class ProductService : IProductService
     {
-        private readonly IRepository<Product> _productRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IRepository<Product> productRepository)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
-        public void DeleteProduct(int id)
+        public void Delete(int id)
         {
             _productRepository.Delete(id);
             _productRepository.SaveChanges();
         }
 
-        public IList<Product> GetAllProducts()
+        public IList<Product> GetAll()
         {
-            return _productRepository.GetAll().Include(p=>p.Category).Include(p=>p.ProductType).ToList();
+            return _productRepository.GetAllWithCategories().ToList();
         }
 
-        public Product GetProductById(int id)
+        public Product GetById(int id)
         {
             return _productRepository.GetById(id);
         }
 
-        public void InsertProduct(Product product)
+        public Product Insert(Product product)
         {
             _productRepository.Add(product);
             _productRepository.SaveChanges();
+            var newProduct = _productRepository.GetById(product.ID);
+            return newProduct;
         }
 
-        public void UpdateProduct(Product product)
+        public Product Update(Product product)
         {
             _productRepository.Update(product);
             _productRepository.SaveChanges();
+            var newProduct = _productRepository.GetById(product.ID);
+            return newProduct;
         }
     }
 }

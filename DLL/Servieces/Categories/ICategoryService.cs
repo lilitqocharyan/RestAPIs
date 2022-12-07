@@ -1,7 +1,7 @@
 ﻿using Core.Domains;
 using System.Collections.Generic;
 
-namespace DLL.Services.Categories
+namespace BLL.Services.Categories
 {
     public interface ICategoryService
     {
@@ -11,28 +11,28 @@ namespace DLL.Services.Categories
         /// Get all categories
         /// </summary>
         /// <returns>Category collection</returns>
-        IList<Category> GetAllCategories();
+        IList<Category> GetAll();
         /// <summary>
         /// Get category by id
         /// </summary>
         /// <param name="id">Category identifier</param>
         /// <returns></returns>
-        Category GetCategoryById(int id);
+        Category GetById(int id);
         /// <summary>
         /// Insert a new category
         /// </summary>
         /// <param name="category">Category</param>
-        void InsertCategory(Category category);
+        Category Insert(Category category);
         /// <summary>
         /// Update category
         /// </summary>
         /// <param name="category">Category</param>
-        void UpdateCategory(Category category);
+        Category Update(Category category);
         /// <summary>
         /// Delete category by id
         /// </summary>
         /// <param name="id">Category id</param>
-        void DeleteCategoryById(int id);
+        void DeleteById(int id);
 
         #endregion
     }
